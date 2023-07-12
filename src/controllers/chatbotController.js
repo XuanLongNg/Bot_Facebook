@@ -1,13 +1,20 @@
 class ChatbotController {
-  constructor() {}
+  constructor() {
+    this.VERIFY_TOKEN = process.env.VERIFY_TOKEN;
+    this.PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+  }
   async getHomePage(req, res) {
     return res.send("Hello World!");
   }
+  // Handles messages events
+  handleMessage(sender_psid, received_message) {}
 
+  // Handles messaging_postbacks events
+  handlePostback(sender_psid, received_postback) {}
+
+  // Sends response messages via the Send API
+  callSendAPI(sender_psid, response) {}
   getWebhook(req, res) {
-    // Your verify token. Should be a random string.
-    const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
-
     // Parse the query params
     let mode = req.query["hub.mode"];
     let token = req.query["hub.verify_token"];
@@ -16,7 +23,7 @@ class ChatbotController {
     // Checks if a token and mode is in the query string of the request
     if (mode && token) {
       // Checks the mode and token sent is correct
-      if (mode === "subscribe" && token === VERIFY_TOKEN) {
+      if (mode === "subscribe" && token === this.VERIFY_TOKEN) {
         // Responds with the challenge token from the request
         console.log("WEBHOOK_VERIFIED");
         res.status(200).send(challenge);
