@@ -16,9 +16,9 @@ app.use(bodyParser.json());
 app.use(routers);
 
 const Port = process.env.PORT || 3000;
-// app.get("/", (req, res) => {
-//   res.send({ message: "Hello, world!" });
-// });
+app.get("*", (req, res) => {
+  res.send({ message: "Hello, world!" });
+});
 
 app.listen(Port, (req, res) => {
   console.log("listening on http://localhost:" + Port);
