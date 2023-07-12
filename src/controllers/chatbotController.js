@@ -1,7 +1,11 @@
+const dotenv = require("dotenv");
+dotenv.config();
 class ChatbotController {
   constructor() {
     this.VERIFY_TOKEN = process.env.VERIFY_TOKEN;
     this.PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+    console.log(this.VERIFY_TOKEN);
+    console.log(this.PAGE_ACCESS_TOKEN);
   }
   async getHomePage(req, res) {
     return res.send("Hello World!");
