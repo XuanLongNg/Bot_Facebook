@@ -1,7 +1,10 @@
 const express = require("express");
-const webhook = require("./webhook");
+// const webhook = require("./webhook");
 const routers = express.Router();
+const chatbotController = require("../controllers/chatbotController");
 
-routers.use("/webhook", webhook);
+routers.get("/", chatbotController.getHomePage);
+routers.get("/webhook", chatbotController.getWebhook);
+routers.post("/webhook", chatbotController.getWebhook);
 
 module.exports = routers;

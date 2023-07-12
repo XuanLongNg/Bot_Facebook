@@ -1,11 +1,11 @@
 const dotenv = require("dotenv");
 dotenv.config();
+const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 class ChatbotController {
   constructor() {
-    this.VERIFY_TOKEN = process.env.VERIFY_TOKEN;
-    this.PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
-    console.log(this.VERIFY_TOKEN);
-    console.log(this.PAGE_ACCESS_TOKEN);
+    // console.log(VERIFY_TOKEN);
+    // console.log(PAGE_ACCESS_TOKEN);
   }
   async getHomePage(req, res) {
     return res.send("Hello World!");
@@ -23,11 +23,11 @@ class ChatbotController {
     let mode = req.query["hub.mode"];
     let token = req.query["hub.verify_token"];
     let challenge = req.query["hub.challenge"];
-
+    console.log(VERIFY_TOKEN);
     // Checks if a token and mode is in the query string of the request
     if (mode && token) {
       // Checks the mode and token sent is correct
-      if (mode === "subscribe" && token === this.VERIFY_TOKEN) {
+      if (mode === "subscribe" && token === VERIFY_TOKEN) {
         // Responds with the challenge token from the request
         console.log("WEBHOOK_VERIFIED");
         res.status(200).send(challenge);
