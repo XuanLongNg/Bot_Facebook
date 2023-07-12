@@ -15,11 +15,8 @@ app.use(bodyParser.json());
 //routing
 app.use("/", routers);
 
-const Port = process.env.PORT || 3000;
-app.get("*", (req, res) => {
-  res.send({ message: "Hello, world!" });
-});
+const PORT = process.env.PORT || 3000;
 
-app.listen(Port, (req, res) => {
-  console.log("listening on port " + Port);
+app.listen(PORT, (req, res) => {
+  console.log("listening on port " + PORT);
 });
