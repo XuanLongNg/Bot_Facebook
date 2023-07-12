@@ -5,6 +5,6 @@ const chatbotController = require("../controllers/chatbotController");
 
 routers.get("/", chatbotController.getHomePage);
 routers.get("/webhook", chatbotController.getWebhook);
-routers.post("/webhook", chatbotController.getWebhook);
+routers.post("/webhook", chatbotController.postWebhook);
 
 module.exports = routers;
