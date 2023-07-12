@@ -1,28 +1,57 @@
 const dotenv = require("dotenv");
+const request = require("request");
 dotenv.config();
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 class ChatbotController {
-  constructor() {
-    // console.log(VERIFY_TOKEN);
-    // console.log(PAGE_ACCESS_TOKEN);
-  }
+  constructor() {}
   async getHomePage(req, res) {
-    return res.send("Hello World!");
+    return res.send("Start web hooks");
   }
   // Handles messages events
   handleMessage(sender_psid, received_message) {
     let response;
 
-    // Check if the message contains text
+    // Checks if the message contains text
     if (received_message.text) {
-      // Create the payload for a basic text message
+      // Create the payload for a basic text message, which
+      // will be added to the body of our request to the Send API
       response = {
-        text: `You sent the message: "${received_message.text}". Now send me an image!`,
+        text: `You sent the message: "${received_message.text}". Now send me an attachment!`,
+      };
+    } else if (received_message.attachments) {
+      // Get the URL of the message attachment
+      let attachment_url = received_message.attachments[0].payload.url;
+      response = {
+        attachment: {
+          type: "template",
+          payload: {
+            template_type: "generic",
+            elements: [
+              {
+                title: "Is this the right picture?",
+                subtitle: "Tap a button to answer.",
+                image_url: attachment_url,
+                buttons: [
+                  {
+                    type: "postback",
+                    title: "Yes!",
+                    payload: "yes",
+                  },
+                  {
+                    type: "postback",
+                    title: "No!",
+                    payload: "no",
+                  },
+                ],
+              },
+            ],
+          },
+        },
       };
     }
 
-    // Sends the response message
+    // Send the response message
     callSendAPI(sender_psid, response);
   }
 
@@ -51,15 +80,34 @@ class ChatbotController {
       },
       message: response,
     };
+
+    // Send the HTTP request to the Messenger Platform
+    request(
+      {
+        uri: "https://graph.facebook.com/v2.6/me/messages",
+        qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+        method: "POST",
+        json: request_body,
+      },
+      (err, res, body) => {
+        if (!err) {
+          console.log("message sent!");
+        } else {
+          console.error("Unable to send message:" + err);
+        }
+      }
+    );
   }
   getWebhook(req, res) {
     // Parse the query params
     let mode = req.query["hub.mode"];
     let token = req.query["hub.verify_token"];
     let challenge = req.query["hub.challenge"];
-    console.log(VERIFY_TOKEN);
+    console.log("0, ", VERIFY_TOKEN);
     // Checks if a token and mode is in the query string of the request
     if (mode && token) {
+      console.log("1, ", VERIFY_TOKEN);
+
       // Checks the mode and token sent is correct
       if (mode === "subscribe" && token === VERIFY_TOKEN) {
         // Responds with the challenge token from the request

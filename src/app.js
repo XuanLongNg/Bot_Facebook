@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //routing
-app.use(routers);
+app.use("/", routers);
 
 const Port = process.env.PORT || 3000;
 app.get("*", (req, res) => {
