@@ -52,7 +52,7 @@ class ChatbotController {
     }
 
     // Send the response message
-    callSendAPI(sender_psid, response);
+    this.callSendAPI(sender_psid, response);
   }
 
   // Handles messaging_postbacks events
@@ -144,9 +144,9 @@ class ChatbotController {
         // Check if the event is a message or postback and
         // pass the event to the appropriate handler function
         if (webhook_event.message) {
-          handleMessage(sender_psid, webhook_event.message);
+          this.handleMessage(sender_psid, webhook_event.message);
         } else if (webhook_event.postback) {
-          handlePostback(sender_psid, webhook_event.postback);
+          this.handlePostback(sender_psid, webhook_event.postback);
         }
       });
 
