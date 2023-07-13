@@ -123,16 +123,12 @@ class ChatbotController {
   postWebhook(req, res) {
     // Parse the request body from the POST
     let body = req.body;
-    // return res.send(body);
-    console.log("1");
+    console.log(body);
     // Check the webhook event is from a Page subscription
     // if (body.object === "page") {
-    console.log("2");
 
     // Iterate over each entry - there may be multiple if batched
     body.entry.forEach((entry) => {
-      console.log("3");
-
       // Get the webhook event. entry.messaging is an array, but
       // will only ever contain one event, so we get index 0
       let webhook_event = entry.messaging[0];
