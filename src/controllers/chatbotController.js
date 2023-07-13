@@ -126,37 +126,37 @@ class ChatbotController {
     // return res.send(body);
     console.log("1");
     // Check the webhook event is from a Page subscription
-    if (body.object === "page") {
-      console.log("2");
+    // if (body.object === "page") {
+    console.log("2");
 
-      // Iterate over each entry - there may be multiple if batched
-      body.entry.forEach((entry) => {
-        console.log("3");
+    // Iterate over each entry - there may be multiple if batched
+    body.entry.forEach((entry) => {
+      console.log("3");
 
-        // Get the webhook event. entry.messaging is an array, but
-        // will only ever contain one event, so we get index 0
-        let webhook_event = entry.messaging[0];
-        console.log(webhook_event);
+      // Get the webhook event. entry.messaging is an array, but
+      // will only ever contain one event, so we get index 0
+      let webhook_event = entry.messaging[0];
+      console.log(webhook_event);
 
-        // Get the sender PSID
-        let sender_psid = webhook_event.sender.id;
-        console.log("Sender PSID: " + sender_psid);
+      // Get the sender PSID
+      let sender_psid = webhook_event.sender.id;
+      console.log("Sender PSID: " + sender_psid);
 
-        // Check if the event is a message or postback and
-        // pass the event to the appropriate handler function
-        if (webhook_event.message) {
-          handleMessage(sender_psid, webhook_event.message);
-        } else if (webhook_event.postback) {
-          handlePostback(sender_psid, webhook_event.postback);
-        }
-      });
+      // Check if the event is a message or postback and
+      // pass the event to the appropriate handler function
+      if (webhook_event.message) {
+        handleMessage(sender_psid, webhook_event.message);
+      } else if (webhook_event.postback) {
+        handlePostback(sender_psid, webhook_event.postback);
+      }
+    });
 
-      // Return a '200 OK' response to all events
-      res.status(200).send("EVENT_RECEIVED");
-    } else {
-      // Return a '404 Not Found' if event is not from a page subscription
-      res.sendStatus(404);
-    }
+    // Return a '200 OK' response to all events
+    res.status(200).send("EVENT_RECEIVED");
+    // } else {
+    // Return a '404 Not Found' if event is not from a page subscription
+    // res.sendStatus(404);
+    // }
   }
 }
 
